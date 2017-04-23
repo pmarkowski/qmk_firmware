@@ -32,8 +32,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Rows are doubled-up
 // Columns are the greater of the two,
 // For left hand side matrix gets padded
-#define MATRIX_ROWS 8
-#define MATRIX_COLS 10
+#define MATRIX_ROWS 10
+#define MATRIX_COLS 8
 
 /*
  * Keyboard Matrix Assignments
