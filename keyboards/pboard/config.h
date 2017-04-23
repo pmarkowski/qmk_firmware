@@ -24,13 +24,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VENDOR_ID       0xFEED
 #define PRODUCT_ID      0x6060
 #define DEVICE_VER      0x0001
-#define MANUFACTURER    You
-#define PRODUCT         pboard
+#define MANUFACTURER    Philip Markowski
+#define PRODUCT         PBoard
 #define DESCRIPTION     A custom keyboard
 
 /* key matrix size */
-#define MATRIX_ROWS 2
-#define MATRIX_COLS 3
+// Rows are doubled-up
+// Columns are the greater of the two,
+// For left hand side matrix gets padded
+#define MATRIX_ROWS 8
+#define MATRIX_COLS 8
 
 /*
  * Keyboard Matrix Assignments
