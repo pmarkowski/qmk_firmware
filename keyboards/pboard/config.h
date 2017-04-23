@@ -33,7 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Columns are the greater of the two,
 // For left hand side matrix gets padded
 #define MATRIX_ROWS 8
-#define MATRIX_COLS 8
+#define MATRIX_COLS 10
 
 /*
  * Keyboard Matrix Assignments
