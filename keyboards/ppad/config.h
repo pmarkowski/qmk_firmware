@@ -8,7 +8,7 @@
 #define PRODUCT_ID      0x0504
 #define DEVICE_VER      0x0001
 #define MANUFACTURER    Philip Markowski
-#define PRODUCT         PPad
+#define PRODUCT         Ppad
 #define DESCRIPTION     Handwired 4x5 numpad
 
 /* key matrix size */
