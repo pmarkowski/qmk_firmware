@@ -19,9 +19,9 @@
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = KEYMAP( \
-    KC_ESC,  KC_1,    KC_2,    KC_3,  KC_4,   KC_5,   KC_6, KC_7,   KC_8,    KC_9,   KC_0,     KC_MINS,  KC_EQL,  KC_BSPC, \
+    F(0),    KC_1,    KC_2,    KC_3,  KC_4,   KC_5,   KC_6, KC_7,   KC_8,    KC_9,   KC_0,     KC_MINS,  KC_EQL,  KC_BSPC, \
     KC_TAB,  KC_Q,    KC_W,    KC_E,  KC_R,   KC_T,   KC_Y, KC_U,   KC_I,    KC_O,   KC_P,     KC_LBRC,  KC_RBRC, KC_BSLS, \
-    KC_CAPS, KC_A,    KC_S,    KC_D,  KC_F,   KC_G,   KC_H, KC_J,   KC_K,    KC_L,   KC_SCLN,  KC_QUOTE, KC_ENT, \
+    MO(1),   KC_A,    KC_S,    KC_D,  KC_F,   KC_G,   KC_H, KC_J,   KC_K,    KC_L,   KC_SCLN,  KC_QUOTE, KC_ENT, \
     KC_LSFT, KC_Z,    KC_X,    KC_C,  KC_V,   KC_B,   KC_N, KC_M,   KC_COMM, KC_DOT, KC_SLASH, KC_RSFT,  KC_UP,   KC_DEL, \
     KC_LCTL, KC_LGUI, KC_LALT, KC_NO, KC_SPC,               KC_SPC, KC_RALT, KC_NO,  KC_RCTL,  KC_LEFT,  KC_DOWN, KC_RIGHT \
   ),
@@ -35,8 +35,40 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 const uint16_t PROGMEM fn_actions[] = {
-
+  [0] = ACTION_FUNCTION(0)
 };
+
+void action_function(keyrecord_t *record, uint8_t id, uint8_t opt) {
+  static uint8_t mods_pressed;
+
+  switch (id) {
+    case 0:
+      mods_pressed = get_mods() & (MOD_BIT(KC_LSFT) | MOD_BIT(KC_RSFT));
+
+      if (record->event.pressed) {
+        /* The key is being pressed.
+         */
+        if (mods_pressed) {
+          add_key(KC_GRV);
+          send_keyboard_report();
+        } else {
+          add_key(KC_ESC);
+          send_keyboard_report();
+        }
+      } else {
+        /* The key is being released.
+         */
+        if (mods_pressed) {
+          del_key(KC_GRV);
+          send_keyboard_report();
+        } else {
+          del_key(KC_ESC);
+          send_keyboard_report();
+        }
+      }
+      break;
+  }
+}
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
