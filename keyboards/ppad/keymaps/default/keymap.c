@@ -14,8 +14,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_P0,                            KC_PDOT
     ),
     [_MED] = KEYMAP(
-        _____,                _____,      _____,      KC_VOLDOWN, \
-        _____,                _____,      _____,      KC_VOLUP, \
+        _____,                _____,      _____,      KC_VOLD, \
+        _____,                _____,      _____,      KC_VOLU, \
         _____,                _____,      _____,               \
         _____,                _____,      _____,      KC_MUTE, \
         _____,                            _____
