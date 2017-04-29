@@ -6,13 +6,14 @@
 #define _MED 1
 
 enum reset_state {
+    PPSTART,
     PPDIV,
     PPENT,
     PPMULT,
     PPPLUS,
     PPMINUS,
     PPZERO
-}
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_NUM] = KEYMAP(
@@ -39,3 +40,39 @@ const uint16_t PROGMEM fn_actions[] = {
     [PPMINUS] = ACTION_FUNCTION(PPMINUS),
     [PPZERO] = ACTION_FUNCTION(PPZERO),
 };
+
+void action_function(keyrecord_t *record, uint8_t id, uint8_t opt) {
+  static enum reset_state currentState;
+
+  switch (id) {
+    case 0:
+      /* Handle the combined Grave/Esc key
+       */
+      mods_pressed = get_mods()&GRAVE_MODS; // Check to see what mods are pressed
+
+      if (record->event.pressed) {
+        /* The key is being pressed.
+         */
+        if (mods_pressed) {
+          mod_flag = true;
+          add_key(KC_GRV);
+          send_keyboard_report();
+        } else {
+          add_key(KC_ESC);
+          send_keyboard_report();
+        }
+      } else {
+        /* The key is being released.
+         */
+        if (mod_flag) {
+          mod_flag = false;
+          del_key(KC_GRV);
+          send_keyboard_report();
+        } else {
+          del_key(KC_ESC);
+          send_keyboard_report();
+        }
+      }
+      break;
+  }
+}
