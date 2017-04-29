@@ -6,13 +6,13 @@
 #define _MED 1
 
 enum reset_state {
-    PPSTART,
-    PPDIV,
-    PPENT,
-    PPMULT,
-    PPPLUS,
-    PPMINUS,
-    PPZERO
+    PP_START,
+    PP_DIV,
+    PP_ENT,
+    PP_MULT,
+    PP_PLUS,
+    PP_MINUS,
+    PP_ZERO
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -33,46 +33,65 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 const uint16_t PROGMEM fn_actions[] = {
-    [PPDIV] = ACTION_FUNCTION(PPDIV),
-    [PPENT] = ACTION_FUNCTION(PPENT),
-    [PPMULT] = ACTION_FUNCTION(PPMULT),
-    [PPPLUS] = ACTION_FUNCTION(PPPLUS),
-    [PPMINUS] = ACTION_FUNCTION(PPMINUS),
-    [PPZERO] = ACTION_FUNCTION(PPZERO),
+    [PP_DIV] = ACTION_FUNCTION(PP_DIV),
+    [PP_ENT] = ACTION_FUNCTION(PP_ENT),
+    [PP_MULT] = ACTION_FUNCTION(PP_MULT),
+    [PP_PLUS] = ACTION_FUNCTION(PP_PLUS),
+    [PP_MINUS] = ACTION_FUNCTION(PP_MINUS),
+    [PP_ZERO] = ACTION_FUNCTION(PP_ZERO),
 };
 
+static enum reset_state current_state = PP_START;
+
+void advance_or_reset_state(keyrecord_t *record, uint8_t id) {
+  if (record->event.pressed && current_state == (id - 1)) {
+    current_state = id;
+  }
+  else {
+    current_state = PP_START;
+  }
+}
+
+void add_or_remove_key(keyrecord_t *record, uint8_t key_value) {
+  if (record->event.pressed) {
+    add_key(key_value);
+  }
+  else {
+    del_key(key_value);
+  }
+
+  send_keyboard_report();
+}
+
 void action_function(keyrecord_t *record, uint8_t id, uint8_t opt) {
-  static enum reset_state currentState;
+  advance_or_reset_state(record, id);
 
+  uint16_t key_value = 0;
   switch (id) {
-    case 0:
-      /* Handle the combined Grave/Esc key
-       */
-      mods_pressed = get_mods()&GRAVE_MODS; // Check to see what mods are pressed
-
-      if (record->event.pressed) {
-        /* The key is being pressed.
-         */
-        if (mods_pressed) {
-          mod_flag = true;
-          add_key(KC_GRV);
-          send_keyboard_report();
-        } else {
-          add_key(KC_ESC);
-          send_keyboard_report();
-        }
-      } else {
-        /* The key is being released.
-         */
-        if (mod_flag) {
-          mod_flag = false;
-          del_key(KC_GRV);
-          send_keyboard_report();
-        } else {
-          del_key(KC_ESC);
-          send_keyboard_report();
-        }
+    case PP_DIV:
+      key_value = KC_PSLS;
+      break;
+    case PP_ENT:
+      key_value = KC_PENT;
+      break;
+    case PP_MULT:
+      key_value = KC_PAST;
+      break;
+    case PP_PLUS:
+      key_value = KC_PPLS;
+      break;
+    case PP_MINUS:
+      key_value = KC_PMNS;
+      break;
+    case PP_ZERO:
+      if (current_state == PP_ZERO) {
+        key_value = RESET;
+      }
+      else {
+        key_value = KC_P0;
       }
       break;
   }
+
+  add_or_remove_key(record, key_value);
 }
