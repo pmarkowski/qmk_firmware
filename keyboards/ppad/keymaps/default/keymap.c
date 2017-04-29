@@ -5,6 +5,15 @@
 #define _NUM 0
 #define _MED 1
 
+enum reset_state {
+    PPDIV,
+    PPENT,
+    PPMULT,
+    PPPLUS,
+    PPMINUS,
+    PPZERO
+}
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_NUM] = KEYMAP(
         LT(_MED, KC_NLCK),    KC_PSLS,    KC_PAST,    KC_PMNS, \
@@ -23,4 +32,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 const uint16_t PROGMEM fn_actions[] = {
+    [PPDIV] = ACTION_FUNCTION(PPDIV),
+    [PPENT] = ACTION_FUNCTION(PPENT),
+    [PPMULT] = ACTION_FUNCTION(PPMULT),
+    [PPPLUS] = ACTION_FUNCTION(PPPLUS),
+    [PPMINUS] = ACTION_FUNCTION(PPMINUS),
+    [PPZERO] = ACTION_FUNCTION(PPZERO),
 };
