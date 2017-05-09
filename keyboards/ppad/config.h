@@ -11,6 +11,8 @@
 #define PRODUCT         Ppad
 #define DESCRIPTION     Handwired 4x5 numpad
 
+#define CATERINA_BOOTLOADER
+
 /* key matrix size */
 #define MATRIX_ROWS 5
 #define MATRIX_COLS 4
