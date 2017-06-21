@@ -1,3 +1,7 @@
+SRC += matrix.c \
+	   i2c.c \
+	   split_util.c
+
 # MCU name
 #MCU = at90usb1287
 MCU = atmega32u4
@@ -66,3 +70,5 @@ UNICODE_ENABLE ?= no         # Unicode
 BLUETOOTH_ENABLE ?= no       # Enable Bluetooth with the Adafruit EZ-Key HID
 AUDIO_ENABLE ?= no           # Audio output on port C6
 FAUXCLICKY_ENABLE ?= no      # Use buzzer to emulate clicky switches
+USE_I2C ?= yes
+CUSTOM_MATRIX = yes
